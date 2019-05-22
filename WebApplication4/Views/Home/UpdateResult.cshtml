@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = "UpdateResult Page";
+    var grid = new WebGrid(
+            source: ViewBag.book,
+            columnNames: new List<string>() { "BOOK_CLASS_NAME", "BOOK_NAME", "BOOK_BOUGHT_DATE", "BOOK_CODE_DESC", "USER_CNAME" },
+            defaultSort: "BOOK_BOUGHT_DATE"
+        ).GetHtml(
+            tableStyle: "webGrid",
+            headerStyle: "webGridHeader",
+            alternatingRowStyle: "webGridAlt",
+            columns: new List<WebGridColumn> {
+                new WebGridColumn() { ColumnName = "BOOK_CLASS_NAME", Header = "圖書類別", CanSort=true},
+                new WebGridColumn() { ColumnName = "BOOK_NAME", Header = "書名", CanSort=true},
+                new WebGridColumn() { ColumnName = "BOOK_BOUGHT_DATE", Header = "購書日期", CanSort=true,Format=@<text>@{@item.BOOK_BOUGHT_DATE.ToString("yyyy/MM/dd")}</text>},
+                new WebGridColumn() { ColumnName = "BOOK_CODE_DESC", Header = "借閱狀態", CanSort=true},
+                new WebGridColumn() { ColumnName = "USER_CNAME", Header = "借閱人", CanSort=true},
+                        }
+                                    );
+}
+
+
+<div class="row">
+    <div class="">
+        @grid
+        <label>新增成功</label>
+        <form action="~/Home/SelectPage" method="POST">
+            <input type="submit" value="確認" />
+        </form>
+    </div>
+</div>
+

@@ -1,0 +1,106 @@
+﻿
+@{
+    ViewBag.Title = "Edit Page";
+}
+
+<script type="text/javascript">
+    function validateStateAndKeeper(form) {
+        var state = $("#state").val();
+        var keeper = $("#keeper").val();
+        var a = state == "0" && (keeper == "" || keeper == "null");
+        var b = state == "1" && (keeper != "" && keeper != "null");
+        var c = state == "2" && (keeper == "" || keeper == "null");
+        var d = state == "3" && (keeper != "" && keeper != "null");
+        if (a || b || c || d) {
+            form.submit();
+        }
+        else {
+            alert("請確認借閱狀態是否正確");
+        }
+    }
+</script>
+
+<div class="row">
+    <div class="">
+        <form action="~/Home/EditPage" method="POST">
+            @Html.AntiForgeryToken()
+            <label>圖書維護</label><br />
+
+            <label>書名</label>
+            <input type="text" name="bookName" value=@ViewBag.book.BOOK_NAME required><br />
+
+            <label>作者</label>
+            <input type="text" name="bookAuthor" value=@ViewBag.book.BOOK_AUTHOR required><br />
+
+            <label>出版商</label>
+            <input type="text" name="bookPublisher" value=@ViewBag.book.BOOK_PUBLISHER required><br />
+
+            <label>內容簡介</label>
+            <input type="text" name="bookNote" value=@ViewBag.book.BOOK_NOTE required><br />
+
+            <label>購書日期</label>
+            <input id="txtDate" type="date" name="bookBoughtDate" value=@{@ViewBag.book.BOOK_BOUGHT_DATE.ToString("yyyy-MM-dd")} required><br />
+
+            <label>圖書類別</label>
+            <select name="bookClassId">
+                @foreach (var item in ViewBag.bookClassList)
+                {
+                    if (item.BOOK_CLASS_ID == ViewBag.book.BOOK_CLASS_ID)
+                    {
+                        <option selected value=@item.BOOK_CLASS_ID>@item.BOOK_CLASS_NAME</option>
+                    }
+                    else
+                    {
+                        <option value=@item.BOOK_CLASS_ID>@item.BOOK_CLASS_NAME</option>
+                    }
+                }
+            </select><br />
+
+            <label>借閱狀態</label>
+            <select id="state" name="codeId">
+                @foreach (var item in ViewBag.bookCodeList)
+                {
+                    if (item.BOOK_CODE_ID == ViewBag.book.BOOK_CODE_ID)
+                    {
+                        <option selected value=@item.BOOK_CODE_ID>@item.BOOK_CODE_DESC</option>
+                    }
+                    else
+                    {
+                        <option value=@item.BOOK_CODE_ID>@item.BOOK_CODE_DESC</option>
+                    }
+                }
+            </select><br />
+
+            <label>借閱人</label>
+            <select id="keeper" name="userId">
+                if (ViewBag.book.USER_ID == "null" || ViewBag.book.USER_ID == null || ViewBag.book.USER_ID == "")
+                {
+                <option selected value="null"></option>
+                }
+                @foreach (var item in ViewBag.memberList)
+                {
+                    if (item.USER_ID == ViewBag.book.USER_ID)
+                    {
+                        <option selected value=@item.USER_ID>@item.USER_CNAME</option>
+                    }
+                    else
+                    {
+                        <option value=@item.USER_ID>@item.USER_CNAME</option>
+                    }
+                }
+            </select><br /><br />
+            <div style="display:none;">
+                <input style="display:none;" type=text name="id" value=@ViewBag.book.BOOK_ID><br />
+            </div>
+            <input type="button" value="刪除" onclick="javascript: if (confirm('確定刪除嗎?')) window.location =
+                    '@Url.Action("DeleteResult", "Home", new {id = @ViewBag.book.BOOK_ID}, "http")'" />
+            <input type="submit" value="存檔" onclick="validateStateAndKeeper(this.form)" />
+
+        </form>
+        <form action="~/Home/SelectResult" method="POST">
+            <br />
+            <input type="submit" value="回上一頁" />
+        </form>
+
+    </div>
+</div>

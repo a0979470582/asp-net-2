@@ -1,0 +1,44 @@
+﻿@{
+    ViewBag.Title = "Select Page";
+}
+<h1>@ViewBag.test</h1>
+<div class="row">
+    <div class="">
+        <form action="~/Home/SelectResult" method="POST">
+            <label>圖書維護</label><br />
+
+            <label>書名</label>
+            <input type="text" name="bookName" /><br />
+
+            <label>圖書類別</label>
+            <select name="bookClassId">
+                <option selected value="null"></option>
+                @foreach (var item in ViewBag.bookClassList)
+                {
+                    <option value=@item.BOOK_CLASS_ID>@item.BOOK_CLASS_NAME</option>
+                }
+            </select><br />
+
+            <label>借閱人</label>
+            <select name="userId">
+                <option selected value="null"></option>
+                @foreach (var item in ViewBag.memberList)
+                {
+                    <option value=@item.USER_ID>@item.USER_CNAME</option>
+                }
+            </select><br />
+
+            <label>借閱狀態</label>
+            <select name="codeId">
+                <option selected value="null"></option>
+                @foreach (var item in ViewBag.bookCodeList)
+                {
+                    <option value=@item.BOOK_CODE_ID>@item.BOOK_CODE_DESC</option>
+                }
+            </select><br />
+            <input type="submit" value="查詢" />
+            <input type="button" value="清除" onclick="javascript:window.location='@Url.Action("","Home")'" />
+            <input type="button" value="新增" onclick="javascript:window.location='@Url.Action("UpdatePage","Home")'" />
+        </form>
+    </div>
+</div>

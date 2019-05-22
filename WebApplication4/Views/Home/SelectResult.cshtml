@@ -1,0 +1,34 @@
+﻿@{
+    ViewBag.Title = "SelectResult Page";
+    var grid = new WebGrid(
+            source: ViewBag.bookDataList,
+            columnNames: new List<string>() { "BOOK_CLASS_NAME", "BOOK_NAME", "BOOK_BOUGHT_DATE", "BOOK_CODE_DESC", "USER_CNAME" },
+            defaultSort: "BOOK_BOUGHT_DATE",
+            rowsPerPage: 5
+        ).GetHtml(
+            tableStyle: "webGrid",
+            headerStyle: "webGridHeader",
+            alternatingRowStyle: "webGridAlt",
+            columns: new List<WebGridColumn> {
+                new WebGridColumn() { ColumnName = "BOOK_CLASS_NAME", Header = "圖書類別", CanSort=true},
+                new WebGridColumn() { ColumnName = "BOOK_NAME", Header = "書名", CanSort=true},
+                new WebGridColumn() { ColumnName = "BOOK_BOUGHT_DATE", Header = "購書日期", CanSort=true, Format=@<text>@{@item.BOOK_BOUGHT_DATE.ToString("yyyy/MM/dd")}</text>},
+                new WebGridColumn() { ColumnName = "BOOK_CODE_DESC", Header = "借閱狀態", CanSort=true},
+                new WebGridColumn() { ColumnName = "USER_CNAME", Header = "借閱人", CanSort=true},
+                new WebGridColumn() { ColumnName = null, Header = "",Format=@<label>
+                    <input type="button" value="編輯" onclick="javascript: window.location =
+                    '@Url.Action("EditPage", "Home",new {id = item.BOOK_ID}, "http")'" />
+                    <input type="button" value="刪除" onclick="javascript: if (confirm('確定刪除嗎?')) window.location =
+                    '@Url.Action("DeleteResult", "Home",new {id = item.BOOK_ID}, "http")'" />
+                </label>}
+                        }
+            );
+}
+<div class="row">
+    <div class="">
+        @grid
+        <input type="button" value="回上一頁" onclick="javascript:window.location='@Url.Action("","Home")'" />
+        
+    </div>
+</div>
+

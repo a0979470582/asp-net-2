@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = "Update Page";
+}
+
+
+<div class="row">
+    <div class="">
+        <form id="UpdatePageForm" action="~/Home/UpdateResult" method="POST">
+            @Html.AntiForgeryToken()
+            <label>圖書維護</label><br />
+
+            <label>書名</label>
+            <input type="text" name="bookName" required /><br />
+
+            <label>作者</label>
+            <input type="text" name="bookAuthor" required /><br />
+
+            <label>出版商</label>
+            <input type="text" name="bookPublisher" required /><br />
+
+            <label>內容簡介</label>
+            <input type="text" name="bookNote" required /><br />
+
+            <label>購書日期</label>
+            <input type="date" name="bookBoughtDate" required /><br />
+
+            <label>圖書類別</label>
+            <select name="bookClassId" required>
+                <option selected disabled hidden></option>
+                @foreach (var item in ViewBag.bookClassList)
+                {
+                    <option value=@item.BOOK_CLASS_ID>@item.BOOK_CLASS_NAME</option>
+                }
+            </select><br />
+
+            <input type="button" value="回上一頁" onclick="javascript:window.location='@Url.Action("","Home")'" />
+            <input id="confirm-button" type="submit" value="存檔" />
+
+        </form>
+
+        
+    </div>
+</div>
